@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import {MainDiv, SurveyContainer, SurveyTitleText, SurveyFormLabel, Span, TextInput, QuestionTypeSelect, QuestionType, AddQuestionBtn} from "./CreateSurveyElements.js";
+import {MainDiv, SurveyContainer, SurveyFormLabel, TextInput, QuestionTypeSelect, QuestionType, AddQuestionBtn} from "./CreateSurveyElements.js";
 // import axios from 'axios';
 
 function CreateSurvey() {
         const [questionList, setInputList] = useState([]);
-        const createElement = event => {
+        const createElement = (event) => {
             var surveyQuestion = document.getElementById("surveyQuestion").value;
             var questionType = document.getElementById("questionType").value;
             if (questionType === "Multiple Choice"){

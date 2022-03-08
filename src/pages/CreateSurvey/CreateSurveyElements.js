@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
 export const MainDiv = styled.div`
-    height: 100%;
-    width: 100%;
     background: #000A;
 `
 export const SurveyContainer = styled.div`
