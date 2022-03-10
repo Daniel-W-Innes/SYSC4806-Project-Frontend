@@ -26,8 +26,6 @@ jobs:
           node-version: '17'
           cache: 'npm'
       - run: npm install
-      - name: Create build dir
-        run: mkdir -p ./build/
       - name: Deploy with gh-pages
         run: |
           git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
