@@ -26,11 +26,11 @@ jobs:
           node-version: '17'
           cache: 'npm'
       - run: npm install
-      - name: Create CNAME
-        run: mkdir -p ./build/ && cp -R CNAME ./build/CNAME
+      - name: Create build dir
+        run: mkdir -p ./build/
       - name: Deploy with gh-pages
         run: |
           git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-          npm run deploy -- -u "github-actions-bot <support+actions@github.com>"
+          echo 'sysc4806.brotherwolf.ca' > ./build/CNAME && npm run deploy -- -u "github-actions-bot <support+actions@github.com>"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
