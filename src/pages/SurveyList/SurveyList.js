@@ -36,7 +36,7 @@ function SurveyList() {
             <tbody>
                 {surveyList.map((item, i) => 
                 <tr key={i}>
-                    <td>{item.surveyId}</td>
+                    <td>{item.id}</td>
                     <td>{item.name}</td>
                 </tr>)}
             </tbody>
