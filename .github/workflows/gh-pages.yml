@@ -28,6 +28,6 @@ jobs:
       - name: Deploy with gh-pages
         run: |
           git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-          echo 'sysc4806.brotherwolf.ca' > ./build/CNAME && npx gh-pages -d build -u "github-actions-bot <support+actions@github.com>"
+          echo 'sysc4806.brotherwolf.ca' > ./build/CNAME && npm gh-pages -d build -u "github-actions-bot <support+actions@github.com>"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
