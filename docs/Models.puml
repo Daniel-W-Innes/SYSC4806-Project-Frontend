@@ -1,0 +1,138 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Surveyor{
+    - id : Long
+    - username : String
+    - firstName : String
+    - lastName : String
+    - hashedPassword : String
+    + Surveyor(username : String, firstName : String, lastName : String, hashedPassword : String) : Surveyor
+    + getId() : Long
+    + getUsername() : String
+    + setUsername(username : String) : void
+    + getFirstName() : String
+    + setFirstName(firstName : String) : void
+    + getLastName() : String
+    + setLastName(lastName : String) : void
+    + getHashedPassword() : String
+    + setHashedPassword(hashedPassword : String) : void
+    + getSurveys() : List<Survey>
+    + getSurvey(name : String) : Survey
+    + addSurvey(s : Survey ) : boolean
+    + toString() : String
+    + equals(o : Object) : boolean
+    + hashCode() + int
+}
+
+class Survey{
+    - id : Long
+    - surveyor : Surveyor
+    - name : String
+    - questions : List<Question>
+    + Survey(name : String): Survey
+    + getId() : Long
+    + getName() : String
+    + setName(name : String) : void
+    + setSurveyor(surveyor : Surveyor) : Surveyor
+    + getSurveyorId() : Long
+    + getQuestions() : List<Question>
+    + addQuestion(q : Question) : boolean
+    + removeQuestion(q : Question) : boolean
+    + toString() : String
+    + equals(o : Object) : boolean
+    + hashCode() + int
+}
+
+package question{
+    class Question{
+        - id : Long
+        - survey : Survey
+        - question : String
+        + Question(question : String) : Question
+        + getId() : Long
+        + getQuestion() : String
+        + setQuestion(question : String) : void
+        + getSurveyId() : Long
+        + setSurvey(survey: Survey) : void
+        + toString() : String
+        + equals(o : Object) : boolean
+        + hashCode() + int
+    }
+    class NumberQuestion extends Question{
+        - max : int
+        - min : int
+        + NumberQuestion(question : String, max : int, min: int) : NumberQuestion
+        + getMax() : int
+        + setMax(max : int) : void
+        + getMin() : int
+        + setMin(min : int) : void
+        + toString() : String
+        + equals(o : Object) : boolean
+        + hashCode() + int
+    }
+    enum MultipleChoiceType{
+        SINGLE_SELECTION
+        MULTI_SELECTION
+        RATING
+    }
+    class MultipleChoiceQuestion extends Question{
+        - options : Set<String>
+        - type : MultipleChoiceType
+        + MultipleChoiceQuestion(question : String, type : MultipleChoiceType) : MultipleChoiceQuestion
+        + getOptions(): Set<String>
+        + addOption(option : String) : boolean
+        + removeOption(option : String) : boolean
+        + getType() : MultipleChoiceType
+        + setType(type : MultipleChoiceType) : void
+        + toString() : String
+        + equals(o : Object) : boolean
+        + hashCode() + int
+    }
+}
+package answer{
+    class Answer{
+        - id : Long
+        - survey : Survey
+        - question : Question
+        + getId() : Long
+        + getSurveyId() : Long
+        + setSurvey(survey : Survey) : void
+        + getQuestionId() : Long
+        + setQuestion(question : Question) : void
+        + toString() : String
+        + equals(o : Object) : boolean
+        + hashCode() + int
+    }
+    class NumberAnswer extends Answer{
+        - answer : int
+        - survey : Survey
+        - question : Question
+        + getId() : Long
+        + getSurveyId() : Long
+        + setSurvey(survey : Survey) : void
+        + getQuestionId() : Long
+        + setQuestion(question : Question) : void
+        + toString() : String
+        + equals(o : Object) : boolean
+        + hashCode() + int
+    }
+    class TextAnswer extends Answer{
+        - answer : String
+        + TextAnswer(answer : String) : TextAnswer
+        + getAnswer() : String
+        + setAnswer(answer)
+        + toString() : String
+        + equals(o : Object) : boolean
+        + hashCode() + int
+    }
+}
+
+Surveyor "1" o-- "0..*" Survey
+Survey "1" *-- "1..*" Question
+Answer "0..*" *-- "1" Survey
+Answer "0..*" *-- "1" Question
+MultipleChoiceQuestion "0..*" *-- "1" MultipleChoiceType
+
+
+@enduml
