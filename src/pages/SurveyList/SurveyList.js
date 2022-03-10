@@ -8,7 +8,7 @@ function SurveyList() {
     const [surveyList, setSurveyList] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/v0/surveyors/DEFAULT/surveys')
+        axios.get('http://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/DEFAULT/surveys')
         .then(response => {
             console.log(response.data);
             setSurveyList(response.data);
@@ -16,7 +16,7 @@ function SurveyList() {
     }, []);
 
     const refreshSurveyList = (event) => {
-        axios.get('http://localhost:8080/api/v0/surveyors/DEFAULT/surveys')
+        axios.get('http://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/DEFAULT/surveys')
             .then(response => {
                 console.log(response.data);
                 setSurveyList(response.data);
