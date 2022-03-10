@@ -26,10 +26,8 @@ jobs:
           node-version: '17'
           cache: 'npm'
       - run: npm install
-      - uses: "finnp/create-file-action@master"
-        env:
-          FILE_NAME: "./build/CNAME"
-          FILE_DATA: "sysc4806.brotherwolf.ca"
+      - name: Create CNAME
+        run: mkdir -p ./build/ && cp -R CNAME ./build/CNAME
       - name: Deploy with gh-pages
         run: |
           git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
