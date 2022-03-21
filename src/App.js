@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
+import Main from './pages/Main';
 //import CreateSurvey from "./pages/CreateSurvey/CreateSurvey.js"
-import SurveyList from "./pages/SurveyList/SurveyList.js"
 
 function App() {
   return (
-    <SurveyList />
+    <Main />
   );
 }
 
