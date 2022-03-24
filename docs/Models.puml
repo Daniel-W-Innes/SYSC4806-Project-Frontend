@@ -29,6 +29,7 @@ class Survey{
     - id : Long
     - surveyor : Surveyor
     - name : String
+    - respondents: List<Respondent>
     - questions : List<Question>
     + Survey(name : String): Survey
     + getId() : Long
@@ -36,9 +37,27 @@ class Survey{
     + setName(name : String) : void
     + setSurveyor(surveyor : Surveyor) : Surveyor
     + getSurveyorId() : Long
+    + addRespondent(resp: Respondent): boolean
+    + getRespondents(): List<Respondent>
+    + removeRespondent(resp: Respondent): boolean
     + getQuestions() : List<Question>
     + addQuestion(q : Question) : boolean
     + removeQuestion(q : Question) : boolean
+    + toString() : String
+    + equals(o : Object) : boolean
+    + hashCode() + int
+}
+
+class Respondent{
+    - id : Long
+    - survey : Survey
+    - answer_list : List<Answer>
+    + Respondent(survey : Survey): Respondent
+    + getId() : Long
+    + setSurvey(survey: Survey): void
+    + setAnswers(answers: List<Answer>): void
+    + addAnswer(answer: Answer): void
+    + removeAnswer(answer: Answer): void
     + toString() : String
     + equals(o : Object) : boolean
     + hashCode() + int
@@ -106,13 +125,8 @@ package answer{
     }
     class NumberAnswer extends Answer{
         - answer : int
-        - survey : Survey
-        - question : Question
-        + getId() : Long
-        + getSurveyId() : Long
-        + setSurvey(survey : Survey) : void
-        + getQuestionId() : Long
-        + setQuestion(question : Question) : void
+        + getAnswer() : int
+        + setAnswer(answer : int) : void
         + toString() : String
         + equals(o : Object) : boolean
         + hashCode() + int
@@ -121,7 +135,7 @@ package answer{
         - answer : String
         + TextAnswer(answer : String) : TextAnswer
         + getAnswer() : String
-        + setAnswer(answer)
+        + setAnswer(answer : String) : void
         + toString() : String
         + equals(o : Object) : boolean
         + hashCode() + int
@@ -133,6 +147,7 @@ Survey "1" *-- "1..*" Question
 Answer "0..*" *-- "1" Survey
 Answer "0..*" *-- "1" Question
 MultipleChoiceQuestion "0..*" *-- "1" MultipleChoiceType
+Respondent "1" *-- "1" Survey
 
 
 @enduml
