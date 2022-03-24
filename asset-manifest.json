@@ -1,13 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.5a8b5255.css",
-    "main.js": "/static/js/main.dd669ea4.js",
+    "main.js": "/static/js/main.ac541733.js",
+    "static/media/green_gradient_2.png": "/static/media/green_gradient_2.b8aae68afc2f35bffcc4.png",
+    "static/media/survey_logo.png": "/static/media/survey_logo.d572f8855935938014c1.png",
     "index.html": "/index.html",
     "main.5a8b5255.css.map": "/static/css/main.5a8b5255.css.map",
-    "main.dd669ea4.js.map": "/static/js/main.dd669ea4.js.map"
+    "main.ac541733.js.map": "/static/js/main.ac541733.js.map"
   },
   "entrypoints": [
     "static/css/main.5a8b5255.css",
-    "static/js/main.dd669ea4.js"
+    "static/js/main.ac541733.js"
   ]
 }
