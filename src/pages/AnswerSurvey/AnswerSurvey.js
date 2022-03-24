@@ -15,8 +15,8 @@ function AnswerSurvey() {
     const [rateQuestions, setRateQuestions] = useState( {} );
 
     useEffect(() => {
-        //axios.get('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/DEFAULT/survey?name='.concat(surveyName))
-        axios.get('http://localhost:8080/api/v0/surveyors/DEFAULT/survey?name='.concat(surveyName)) // For testing
+        axios.get('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/DEFAULT/survey?name='.concat(surveyName))
+        //axios.get('http://localhost:8080/api/v0/surveyors/DEFAULT/survey?name='.concat(surveyName)) // For testing
         .then(response => {
             console.log(response.data);
             setQuestionsList(response.data["questions"]);
