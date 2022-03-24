@@ -1,69 +1,54 @@
-import React, {useState} from "react";
-import {MainDiv, SurveyContainer, TitleContainer, SurveyTitleText, Question, SubmitBtn, BtnContainer, MultipleChoiceOption, TextInput} from "./AnswerSurveyElements";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import axios from 'axios';
+import { MainDiv, SurveyContainer, TitleContainer, SurveyTitleText, Question, SubmitBtn, BtnContainer, MultipleChoiceOption, TextInput } from "./AnswerSurveyElements";
 
-// TODO: fetch survey from database + submit answers to database
+// TODO: submit answers to database
 function AnswerSurvey() {
 
-    // for now - to see what it looks like
-    const questionList = [{"name": "Pick a choice", "type": "MCQ", "choices":["c1", "c2", "c3"]},
-                          {"name": "Pick a choice2", "type": "MCQ", "choices":["c1", "c2"]},
-                          {"name": "Enter an answer", "type": "text"},
-                          {"name": "Pick a number", "type": "rate", "min":1, "max":10},
-                          {"name": "Pick choices", "type": "MS", "choices":["c1", "c2", "c3"]}];
+    let [searchParams, setSearchParams] = useSearchParams();
+    let [surveyName, setSurveyName] = useState( searchParams.get("name") );
+    const [questionList, setQuestionsList] = useState([]);
+    const [mcQuestions, setMCQuestions] = useState( {} );
+    const [msQuestions, setMSQuestions] = useState( {} );
+    const [textQuestions, setTextQuestions] = useState( {} );
+    const [rateQuestions, setRateQuestions] = useState( {} );
 
-    // Setting state variables
-    var mcQs = {};
-    var msQs = {};
-    var textQs = {};
-    var rateQs = {};
-    questionList.forEach((question) => {
-        if(question["type"] === "MCQ") {
-            mcQs[question["name"]] = new Array(question["choices"].length).fill(false);
-        } else if(question["type"] === "MS") {
-            msQs[question["name"]] = new Array(question["choices"].length).fill(false);
-        } else if(question["type"] === "long") {
-            textQs[question["name"]] = "";
-        } else {
-            rateQs[question["name"]] = "";
-        }
-    });
-    const [mcQuestions, setMCQuestions] = useState( mcQs );
-    const [msQuestions, setMSQuestions] = useState( msQs );
-    const [textQuestions, setTextQuestions] = useState( textQs );
-    const [rateQuestions, setRateQuestions] = useState( rateQs );
-
-    // Get survey questions - TODO
-    /*useEffect(() => {
-        axios.get('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/DEFAULT/surveys')
+    useEffect(() => {
+        //axios.get('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/DEFAULT/survey?name='.concat(surveyName))
+        axios.get('http://localhost:8080/api/v0/surveyors/DEFAULT/survey?name='.concat(surveyName)) // For testing
         .then(response => {
             console.log(response.data);
-            setQuestionList(response.data);
-        });
-    }, []);*/
+            setQuestionsList(response.data["questions"]);
+        })
+    }, []);
 
     const handleOnMCChange = (question, choicePosition) => {
-        console.log("called");
-        var qName = question["name"];
-        const updatedChecked = mcQuestions[qName].map((item, index) =>
+        var qId = question["id"];
+        var newMCQuestions = mcQuestions;
+        if(!(qId in newMCQuestions)) newMCQuestions[qId] = new Array(question["options"].length).fill(false);
+        setMCQuestions(newMCQuestions);
+
+        const updatedChecked = mcQuestions[qId].map((item, index) =>
             index === choicePosition ? item = true : item = false
         );
 
         var newMCQuestions = mcQuestions;
-        newMCQuestions[qName] = updatedChecked;
+        newMCQuestions[qId] = updatedChecked;
         setMCQuestions(newMCQuestions);
         console.log(mcQuestions);
     };
 
     const multipleChoiceQuestion = (question) => {
         return(<div>
-            {question["choices"].map((name, i) => 
-                <MultipleChoiceOption className={question["name"]} key={i}>
+            {question["options"].map((name, i) => 
+                <MultipleChoiceOption className={question["question"]} key={i}>
                     <label>
                         <input
                             type="radio"
-                            name={question["name"]}
+                            name={question["question"]}
                             value={name}
-                            onChange={() => handleOnMCChange(question, i)}
+                            onChange={(e) => handleOnMCChange(question, i, e)}
                         />
                         &nbsp;{name}
                     </label> <br />
@@ -73,26 +58,30 @@ function AnswerSurvey() {
     }
 
     const handleOnMSChange = (question, choicePosition) => {
-        console.log("called2");
-        var qName = question["name"];
-        const updatedChecked = msQuestions[qName].map((item, index) =>
+        var qId = question["id"];
+        var newMSQuestions = msQuestions;
+        if(!(qId in newMSQuestions)) newMSQuestions[qId] = new Array(question["options"].length).fill(false);
+        setMSQuestions(newMSQuestions);
+
+
+        const updatedChecked = msQuestions[qId].map((item, index) =>
             index === choicePosition ? !item : item
         );
 
         var newMSQuestions = msQuestions;
-        newMSQuestions[qName] = updatedChecked;
+        newMSQuestions[qId] = updatedChecked;
         setMSQuestions(newMSQuestions);
         console.log(msQuestions);
     };
 
     const multipleSelectQuestion = (question) => {
         return(<div>
-            {question["choices"].map((item, i) => 
+            {question["options"].map((item, i) => 
                 <MultipleChoiceOption className="checkbox" key={i}>
                     <label>
                         <input
                             type="checkbox"
-                            value={question["name"]}
+                            value={question["question"]}
                             onChange={() => handleOnMSChange(question, i)}
                         />
                         &nbsp;{item}
@@ -103,10 +92,9 @@ function AnswerSurvey() {
     }
 
     const handleOnTextChange = (question, e) => {
-        console.log("called3");
-        var qName = question["name"];
+        var qId = question["id"];
         var newTextQuestions = textQuestions;
-        newTextQuestions[qName] = e.target.value;
+        newTextQuestions[qId] = e.target.value;
         setTextQuestions(newTextQuestions);
         console.log(textQuestions);
     };
@@ -114,19 +102,18 @@ function AnswerSurvey() {
     const longAnswerQuestion = (question) => {
         return(<div>
             <TextInput 
-                name={question["name"]} 
+                name={question["question"]} 
                 type="text" 
-                value={textQuestions[question["name"]]} 
+                value={textQuestions[question["id"]]} 
                 onChange={(e) => handleOnTextChange(question, e)} 
             />
         </div>);
     }
 
     const handleOnRateChange = (question, e) => {
-        console.log("called4");
-        var qName = question["name"];
+        var qId = question["id"];
         var newRateQuestions = rateQuestions;
-        newRateQuestions[qName] = e.target.value;
+        newRateQuestions[qId] = e.target.value;
         setRateQuestions(newRateQuestions);
         console.log(rateQuestions);
     };
@@ -135,7 +122,7 @@ function AnswerSurvey() {
         return(<div>
             <input
                 type="number"
-                name={question["name"]}
+                name={question["question"]}
                 min={question["min"]}
                 max={question["max"]}
                 onChange={(e) => handleOnRateChange(question, e)}
@@ -150,13 +137,13 @@ function AnswerSurvey() {
             </TitleContainer>
            
             <form>
-                {questionList.map((item, i) => 
+                {questionList.map((question, i) => 
                 <SurveyContainer key={i}> 
-                    <Question>Q{i+1} &nbsp; {item["name"]}</Question><br /> <br />
-                    {item["type"] === "MCQ" ? multipleChoiceQuestion(item) : ""}
-                    {item["type"] === "MS" ? multipleSelectQuestion(item) : ""}
-                    {item["type"] === "text" ? longAnswerQuestion(item) : ""}
-                    {item["type"] === "rate" ? rateQuestion(item) : ""}
+                    <Question>Q{i+1} &nbsp; {question["question"]}</Question><br /> <br />
+                    {("options" in question && question["type"] == "SINGLE_SELECTION") ? multipleChoiceQuestion(question) : ""}
+                    {("options" in question && question["type"] == "MULTI_SELECTION") ? multipleSelectQuestion(question) : ""}
+                    {"max" in question ? rateQuestion(question) : ""}
+                    { !("options" in question) && !("max" in question) ? longAnswerQuestion(question) : ""}
                 </SurveyContainer>)
                 }
                 <BtnContainer><SubmitBtn type="submit" value="SUBMIT SURVEY" /></BtnContainer>
