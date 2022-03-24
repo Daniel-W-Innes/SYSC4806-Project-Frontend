@@ -3,29 +3,39 @@ import Table from 'react-bootstrap/Table'
 import {MainDiv, SurveyListText, UpdateButton} from "./SurveyListElements";
 import axios from 'axios';
 
-function SurveyList() {
+function SurveyList(props) {
 
     const [surveyList, setSurveyList] = useState([]);
 
     useEffect(() => {
-        axios.get('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/DEFAULT/surveys')
-        .then(response => {
-            console.log(response.data);
-            setSurveyList(response.data);
-        });
-    }, []);
-
-    const refreshSurveyList = (event) => {
-        axios.get('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/DEFAULT/surveys')
-            .then(response => {
+        if (props.isLoggedIn) {
+            axios.get(('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/' + props.username + '/surveys'), {
+                headers: {
+                    'Authorization': "Bearer " + localStorage.getItem("access_token")
+                }
+            }).then(response => {
                 console.log(response.data);
                 setSurveyList(response.data);
-            })
+            });
+        }
+    }, [props.username, props.isLoggedIn]);
+
+    const refreshSurveyList = (event) => {
+        if (props.isLoggedIn) {
+            axios.get(('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/' + props.username + '/surveys'), {
+                headers: {
+                    'Authorization': "Bearer " + localStorage.getItem("access_token")
+                }
+            }).then(response => {
+                console.log(response.data);
+                setSurveyList(response.data);
+            });
+        }
     }
 
     return (
         <MainDiv>
-            <SurveyListText>SURVEYOR NAME: DEFAULT <br/>LIST OF SURVEYS</SurveyListText>
+            <SurveyListText>SURVEYOR NAME: {(props.username).toUpperCase()}<br/>LIST OF SURVEYS</SurveyListText>
             <Table striped variant="dark">
             <thead>
                 <tr>
