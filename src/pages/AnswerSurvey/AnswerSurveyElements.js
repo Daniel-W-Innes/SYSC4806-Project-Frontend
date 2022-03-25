@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 export const MainDiv = styled.div`
+    padding-top: 10%;
     background: #000A;
-    height:100%;
+    min-height:100%;
 `
 export const TitleContainer = styled.div`
     display: table;
