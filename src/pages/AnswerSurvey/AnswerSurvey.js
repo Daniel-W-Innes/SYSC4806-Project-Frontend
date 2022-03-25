@@ -7,12 +7,15 @@ function AnswerSurvey() {
 
     let [searchParams, setSearchParams] = useSearchParams();
     let [surveyName, setSurveyName] = useState( searchParams.get("name") );
+    let [surveyorName, setSurveyorName] = useState( searchParams.get("surveyor") );
     const [questionList, setQuestionsList] = useState([]);
     const [answerList, setAnswerList] = useState([]);
 
     useEffect(() => {
-        axios.get('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/DEFAULT/survey?name='.concat(surveyName))
-        //axios.get('http://localhost:8080/api/v0/surveyors/DEFAULT/survey?name='.concat(surveyName)) // For testing
+        console.log(surveyorName);
+        console.log(surveyName);
+        axios.get('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/' + surveyorName + '/survey?name=' + surveyName)
+        //axios.get('http://localhost:8080/api/v0/surveyors/' + surveyorName + '/survey?name=' + surveyName) // For testing
         .then(response => {
             console.log(response.data);
             setQuestionsList(response.data["questions"]);
@@ -119,7 +122,7 @@ function AnswerSurvey() {
             },
             data : JSON.stringify(answerObj)
         };
-        
+
         axios(config)
         .then(response => {
             console.log(response.data);
