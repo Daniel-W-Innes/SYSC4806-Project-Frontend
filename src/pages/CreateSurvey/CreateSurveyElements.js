@@ -30,12 +30,17 @@ export const Span = styled.span`
     display: table-cell;
     padding: 0 0 0 5px;
 `
+export const SurveyRow = styled.div`
+    display: table-row;
+    padding: 0 0 0 5px;
+`
 export const TextInput = styled.input`
     height: 50%;
     width: 50%;
     display: table-cell;
     padding: 0 0 0 5px
 `
+
 
 export const QuestionTypeSelect = styled.select`
   max-width: 50%;
