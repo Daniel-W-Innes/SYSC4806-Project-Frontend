@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import ReactDOMServer from 'react-dom/server'
 import {MainDiv, SurveyContainer, SurveyFormLabel, TextInput, QuestionTypeSelect, QuestionType, AddQuestionBtn, SurveyRow} from "./CreateSurveyElements.js";
 import axios from 'axios';
 
@@ -7,8 +8,11 @@ function CreateSurvey(props) {
         const [questionList, setInputList] = useState([]);
         const createElement = (event) => {
             setCounter(counter + 1);
+            console.log(counter);
             var surveyQuestion = document.getElementById("surveyQuestion").value;
-            var questionType = document.getElementById("questionType").value;
+            var questionType = document.getElementById("mult_type").value;
+            
+            console.log(questionType);
             if (questionType === "Multiple Choice"){
                 setInputList(questionList.concat(
                     <SurveyContainer>    
@@ -17,14 +21,13 @@ function CreateSurvey(props) {
                             <SurveyFormLabel htmlfor="surveyQuestion">QUESTION</SurveyFormLabel>
                             <TextInput id = "question" name="surveyQuestion" type="text" defaultValue={surveyQuestion}/>
                         </SurveyRow>
-                        
+
                         <SurveyRow>
                             <SurveyFormLabel htmlfor="surveyQuestion">NUMBER OF OPTIONS</SurveyFormLabel>
                             <TextInput onChange={(e) => multiSize(e)} type="number" id= {counter} name="quantity" min="2" max="10"/>
                         </SurveyRow>
                         <SurveyRow id={"MC" + counter}>
                         </SurveyRow>
-                        
                     </SurveyContainer>));
             }
             else if (questionType === "Long Answer"){
@@ -32,7 +35,7 @@ function CreateSurvey(props) {
                     <SurveyContainer> 
                         <SurveyFormLabel id = "questionType" htmlfor="surveyQuestion">{questionType}</SurveyFormLabel>
                         <SurveyFormLabel htmlfor="surveyQuestion">QUESTION</SurveyFormLabel>
-                        <TextInput id = "question" name="surveyQuestion" type="text" defaultValue={surveyQuestion}/><br></br>
+                        <TextInput id = "question" name="surveyQuestion" class="Long_M2" type="text" defaultValue={surveyQuestion}/><br></br>
                     </SurveyContainer>));
             }else if (questionType === "Multi-Select"){
                 setInputList(questionList.concat(
@@ -69,6 +72,7 @@ function CreateSurvey(props) {
             };
             
         };
+
         const minMax = (event) => {
             var min = document.getElementById("min").value;
             var max = document.getElementById("max").value;
@@ -77,6 +81,7 @@ function CreateSurvey(props) {
             }
             document.getElementById("min").value = min;
         };
+
         const multiSize = (event) => {
             var options = document.getElementById(event.target.id).value;
             document.getElementById("MC" + event.target.id).innerHTML = "";
@@ -88,22 +93,21 @@ function CreateSurvey(props) {
 
             document.getElementById("MC" + event.target.id).innerHTML = inner;
         }
-        const submitSurvey = (event) => {
 
+        const submitSurvey = (event) => {
             var questions = [];
             var newSurvey = {
-                "name": props.username,
+                "name": document.getElementById("SURVEY_TITLE").value,
                 "questions": questions
             };
-            
-            for(var i in questionList) {    
-            
-                var question = questionList[i];
-                console.log(question);
-
+            var long_ans = document.getElementsByClassName("sc-pVTFL fhmRc");
+            console.log(long_ans);
+            for(var i = 1 ; i < long_ans.length-1; i++){    
+                var question = long_ans[i];
+                console.log(question.value);
+                /*
                 if(question.getElementById("questionType").innerHTML === "Multiple Choice"){
-
-                    var options = []
+                    options = [];
                     for (let i = 0; i < document.getElementById(i).value; i++){
                         options = document.getElementById("MC" + i).getElementsById("option").innerHTML;
                     }
@@ -116,7 +120,7 @@ function CreateSurvey(props) {
                     });
 
                 } else if(question.getElementById("questionType").innerHTML === "Multi-Select"){
-                    var options = []
+                    options = []
                     for (let i = 0; i < document.getElementById(i).value; i++){
                         options = document.getElementById("MC" + i).getElementsById("option").innerHTML;
                     }
@@ -136,19 +140,16 @@ function CreateSurvey(props) {
                         "min" : question.getElementById("min").value,
                         "max" : question.getElementById("max").value
                     });
-                } else if(question.getElementById("questionType").innerHTML === "Long Answer"){
-                    newSurvey.questions.push({ 
-                        "type" : question.getElementById("questionType").innerHTML,
-                        "question" : question.getElementById("question").value,
-                        "displayFormat" : "LONG-ANSWER"
-                    });
-                }
-            
+                }*/
+                 
+                newSurvey.questions.push({
+                    "type" : "text",
+                    "question" : question.value
+                });
                 
             }
 
-            console.log(newSurvey);
-
+            console.log(JSON.stringify(newSurvey));
 
             var config = {
                 method: 'post',
@@ -165,18 +166,19 @@ function CreateSurvey(props) {
                 alert("Your answers were submitted successfully.");
             })
             
-        }
+        };
+
     return (
         <MainDiv>
             <SurveyContainer>
                 <SurveyFormLabel htmlfor="surveyTitle">SURVEY TITLE</SurveyFormLabel>
-                <TextInput name="surveyTitle" type="text"/>
+                <TextInput id="SURVEY_TITLE" name="surveyTitle" type="text"/>
             </SurveyContainer>
             {questionList}
             <SurveyContainer>
                 <SurveyFormLabel htmlfor="surveyQuestion">QUESTION</SurveyFormLabel>
                 <TextInput id="surveyQuestion" name="surveyQuestion" type="text"/>
-                <QuestionTypeSelect id="questionType">
+                <QuestionTypeSelect id="mult_type">
                     <QuestionType>Multiple Choice</QuestionType>
                     <QuestionType>Multi-Select</QuestionType>
                     <QuestionType>Rating</QuestionType>
