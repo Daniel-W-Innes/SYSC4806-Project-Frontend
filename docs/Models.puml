@@ -58,9 +58,19 @@ class Respondent{
     + setAnswers(answers: List<Answer>): void
     + addAnswer(answer: Answer): void
     + removeAnswer(answer: Answer): void
+    + compareAnswer(answer: Answer): Boolean
     + toString() : String
     + equals(o : Object) : boolean
     + hashCode() + int
+}
+
+class Role {
+    - id: Long
+    - name: String
+    + Role(name: String): Role
+    + getId(): Long
+    + getName(): String
+    + setName(name: String): void
 }
 
 package question{
@@ -107,6 +117,9 @@ package question{
         + toString() : String
         + equals(o : Object) : boolean
         + hashCode() + int
+    }
+    class TextAnswerable extends Question {
+        + TextAnswerable(question: String): TextAnswerable
     }
 }
 package answer{

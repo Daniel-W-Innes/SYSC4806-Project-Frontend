@@ -21,7 +21,7 @@ Back-End Repo: https://github.com/Daniel-W-Innes/SYSC4806-Project-Backend <br/>
 For this deliverable, we have built a basic usable application. The back-end of the application is hosted on **TravisCI** and deployed on **Heroku**. To develop the application, we are using the framework Spring Boot on the back end and React Static for the front end. Note that the code for the back end is here: https://github.com/Daniel-W-Innes/SYSC4806-Project-Backend 
 
 ### Model
-In this application, we consider that to create surveys, a user must have an account. When the user creates an account, the user becomes a *Surveyor* and can create *Survey* objects. To fill surveys, users do not need accounts. Surveys are composed of a list of *Question* objects. The most basic type of questions is long answer question. These are modeled with the *Question* class. *MultipleChoiceQuestion* are questions where the user must pick an option from a list. These can also be used for True or False questions. *NumberQuestion* are questions where the user is asked to pick a number in a range. When users fill surveys, we create *Answer* objects to record their answers. Answers are associated with one particular *Question* and *Survey*. *TextAnswer* are used for long answer questions and multiple choice questions. *NumberAnswer* are used for number questions. Note that one *Question* has as many *Answer* associated to it as the number of people who answer the question.
+In this application, we consider that to create surveys, a user must have an account. When the user creates an account, the user becomes a *Surveyor* and can create *Survey* objects. To fill surveys, users do not need accounts, they will be considered as a *Respondent*, but will remain anonymous. Surveys are composed of a list of *Question* objects. The most basic type of questions is long answer question. These are modeled with the *Question* class. *MultipleChoiceQuestion* are questions where the user must pick an option from a list. These can also be used for True or False questions. *NumberQuestion* are questions where the user is asked to pick a number in a range. When users fill surveys, we create *Answer* objects to record their answers. Answers are associated with one particular *Question* and *Survey*. *TextAnswer* are used for long answer questions and multiple choice questions. *NumberAnswer* are used for number questions. Note that one *Question* has as many *Answer* associated to it as the number of people who answer the question.
 
 ![ModelUML](/docs/Models.png)
 
@@ -35,7 +35,8 @@ The database structure is very similar to the structure of the model classes. We
 
 This is the use case that allows a surveyor to log in to the application and manage their surveys. The surveyor can create an account or log in as an existing user. Once they are logged in, surveyors can view the list of their own surveys, or create a new survey. In the next milestone, we will add the option to view statistics about the collected answers to surveys.
 
-![Authentication](/docs/Authentication.png)
+![SignUp](/docs/Authentication1.png)
+![LogIn](/docs/Authentication2.png)
 
 ### Use Case 2: Display list of surveys
 
