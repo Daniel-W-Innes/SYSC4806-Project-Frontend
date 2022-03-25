@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const MainDiv = styled.div`
+    padding-top: 10%;
     background: #000A;
     min-height:100%;
 `

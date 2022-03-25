@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import ReactDOMServer from 'react-dom/server'
 import {MainDiv, SurveyContainer, SurveyFormLabel, TextInput, QuestionTypeSelect, QuestionType, AddQuestionBtn, SurveyRow} from "./CreateSurveyElements.js";
 import axios from 'axios';
 
@@ -153,7 +152,7 @@ function CreateSurvey(props) {
 
             var config = {
                 method: 'post',
-                url: "http://localhost:3000/answer-survey?surveyor="+ props.username +"&name=%20survey",
+                url: "https://sysc4806-survey-monkey.herokuapp.com/answer-survey?surveyor="+ props.username +"&name=%20survey",
                 headers: { 
                   'Content-Type': 'application/json'
                 },

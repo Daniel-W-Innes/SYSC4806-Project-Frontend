@@ -5,22 +5,25 @@ import { MainDiv, SurveyContainer, TitleContainer, SurveyTitleText, Question, Su
 
 function AnswerSurvey() {
 
-    let [searchParams, setSearchParams] = useSearchParams();
-    let [surveyName, setSurveyName] = useState( searchParams.get("name") );
-    let [surveyorName, setSurveyorName] = useState( searchParams.get("surveyor") );
+    let [searchParams] = useSearchParams();
+    const surveyName =  searchParams.get("name");
+    const surveyorName = searchParams.get("surveyor");
     const [questionList, setQuestionsList] = useState([]);
     const [answerList, setAnswerList] = useState([]);
 
     useEffect(() => {
         console.log(surveyorName);
         console.log(surveyName);
-        axios.get('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/' + surveyorName + '/survey?name=' + surveyName)
-        //axios.get('http://localhost:8080/api/v0/surveyors/' + surveyorName + '/survey?name=' + surveyName) // For testing
+        // axios.get('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/' + surveyorName + '/survey?name=' + surveyName)
+        axios.get(('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/' + surveyorName + '/survey?name=' + surveyName), {
+            headers: {
+                'Authorization': "Bearer " + localStorage.getItem("access_token")
+            }}) // For testing
         .then(response => {
             console.log(response.data);
             setQuestionsList(response.data["questions"]);
         })
-    }, []);
+    }, [surveyName, surveyorName]);
 
     const handleOnMCChange = (question, choicePosition) => {
         var qId = question["id"];
@@ -31,6 +34,7 @@ function AnswerSurvey() {
     };
 
     const multipleChoiceQuestion = (question) => {
+        console.log(question)
         return(<div>
             {question["options"].map((name, i) => 
                 <MultipleChoiceOption className={question["question"]} key={i}>
@@ -42,6 +46,7 @@ function AnswerSurvey() {
                             onChange={() => handleOnMCChange(question, i)}
                         />
                         &nbsp;{name}
+                        {console.log(name)}
                     </label> <br />
                 </MultipleChoiceOption>)
             }
@@ -126,7 +131,7 @@ function AnswerSurvey() {
         axios(config)
         .then(response => {
             console.log(response.data);
-            alert("Your answers were submitted successfully.");
+            //alert("Your answers were submitted successfully.");
         }) // Redirect the user to another page?
     }
 
@@ -142,10 +147,10 @@ function AnswerSurvey() {
                 var qType = "";
                 var isMsQuestion = false;
 
-                if("options" in question && question["type"] == "SINGLE_SELECTION") { // MC question
+                if("options" in question && question["displayFormat"] === "SINGLE_SELECTION") { // MC question
                     ansType = "text";
                     qType = "multipleChoice";
-                } else if("options" in question && question["type"] == "MULTI_SELECTION") { // MS question
+                } else if("options" in question && question["displayFormat"] === "MULTI_SELECTION") { // MS question
                     ansType = "text";
                     qType = "multipleChoice";
                     isMsQuestion = true;
@@ -161,6 +166,7 @@ function AnswerSurvey() {
                 answer["type"] = ansType;
                 answer["question"] = { "type": qType, "id": question["id"] };
                 if(isMsQuestion) { // Send each checked option as an answer
+                    console.log(answerList[question["id"]])
                     answerList[question["id"]].forEach((option, i) => {
                         if(option) {
                             answer["answer"] = question["options"][i];
@@ -185,8 +191,8 @@ function AnswerSurvey() {
                 {questionList.map((question, i) => 
                 <SurveyContainer key={i}> 
                     <Question>Q{i+1} &nbsp; {question["question"]}</Question><br /> <br />
-                    {("options" in question && question["type"] == "SINGLE_SELECTION") ? multipleChoiceQuestion(question) : ""}
-                    {("options" in question && question["type"] == "MULTI_SELECTION") ? multipleSelectQuestion(question) : ""}
+                    {("options" in question && question["displayFormat"] === "SINGLE_SELECTION") ? multipleChoiceQuestion(question) : ""}
+                    {("options" in question && question["displayFormat"] === "MULTI_SELECTION") ? multipleSelectQuestion(question) : ""}
                     {"max" in question ? numberQuestion(question) : ""}
                     { !("options" in question) && !("max" in question) ? longAnswerQuestion(question) : ""}
                 </SurveyContainer>)
