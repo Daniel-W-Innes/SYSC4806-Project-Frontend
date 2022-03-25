@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const MainDiv = styled.div`
+    padding-top: 10%;
     background: #000A;
 `
 export const SurveyContainer = styled.div`
