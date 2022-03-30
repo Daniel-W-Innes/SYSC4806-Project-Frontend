@@ -199,8 +199,8 @@ class CreateSurvey extends React.Component {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
-                "Authorization": "Bearer"
-            }, //TODO get Authorization
+                "Authorization": "Bearer " + localStorage.getItem("access_token")
+            },
             body: JSON.stringify(request)
         };
         fetch("https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/" + this.username + "/surveys", config)
