@@ -19,11 +19,11 @@ function App() {
       const accessToken = localStorage.getItem("access_token");
       const username = localStorage.getItem("username");
       if (accessToken !== null && username !== null) {
-        setLoggedInSuveyorHandler(accessToken, username);
+        setLoggedInSurveyorHandler(accessToken, username);
       }
     }, []);
 
-  const setLoggedInSuveyorHandler = (accessToken, username) => {
+  const setLoggedInSurveyorHandler = (accessToken, username) => {
       if (accessToken !== "" && username !== "") {
         setShowSurveyor(true);
         axios.get(('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/api/v0/surveyors/' + username), {
@@ -42,13 +42,13 @@ function App() {
 
   return (
     <Router>
-      <Navbar username={surveyorUsername} isLoggedIn={isSurveyorLoggedIn} setSurveyor={setLoggedInSuveyorHandler} />
+      <Navbar username={surveyorUsername} isLoggedIn={isSurveyorLoggedIn} setSurveyor={setLoggedInSurveyorHandler} />
       <Routes>
           <Route path="/" element={<Home isLoggedIn={isSurveyorLoggedIn} />} />
           <Route path="/survey-list" element={<SurveyList username={surveyorUsername} isLoggedIn={isSurveyorLoggedIn} />} />
           <Route path="/create-survey" element={<CreateSurvey username={surveyorUsername} isLoggedIn={isSurveyorLoggedIn} />} />
           <Route path="/answer-survey" element={<AnswerSurvey/>} />
-          <Route path="/signin" element={<SignIn setLoggedInSurveyor={setLoggedInSuveyorHandler} />} />
+          <Route path="/signin" element={<SignIn setLoggedInSurveyor={setLoggedInSurveyorHandler} />} />
           <Route path="/signup" element={<SignUp />} />
       </Routes>
     </Router>
