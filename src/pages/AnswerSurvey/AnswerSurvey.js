@@ -6,24 +6,23 @@ import { MainDiv, SurveyContainer, TitleContainer, SurveyTitleText, Question, Su
 function AnswerSurvey() {
 
     let [searchParams] = useSearchParams();
-    const surveyName =  searchParams.get("name");
-    const surveyorName = searchParams.get("surveyor");
+    const surveyID =  searchParams.get("surveyID");
     const [questionList, setQuestionsList] = useState([]);
     const [answerList, setAnswerList] = useState([]);
+    var surveyName = "";
 
     useEffect(() => {
-        console.log(surveyorName);
-        console.log(surveyName);
         // axios.get('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/' + surveyorName + '/survey?name=' + surveyName)
-        axios.get(('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/' + surveyorName + '/survey?name=' + surveyName), {
-            headers: {
-                'Authorization': "Bearer " + localStorage.getItem("access_token")
-            }}) // For testing
+        axios.get(('https://sysc4806-survey-monkey.herokuapp.com/api/v0/respondents/?id=' + surveyID))
+        //axios.get(('http://localhost:8080/api/v0/respondents/?id=' + surveyID)) // For testing
         .then(response => {
             console.log(response.data);
             setQuestionsList(response.data["questions"]);
+            surveyName = response.data["name"];
+            //set H1 elements to the surveyName
+            document.getElementById("surveyName").innerHTML = surveyName;
         })
-    }, [surveyName, surveyorName]);
+    }, [surveyID]);
 
     const handleOnMCChange = (question, choicePosition) => {
         var qId = question["id"];
@@ -120,8 +119,8 @@ function AnswerSurvey() {
         console.log(JSON.stringify(answerObj));
         var config = {
             method: 'post',
-            url: 'https://sysc4806-survey-monkey.herokuapp.com/api/v0/respondents/answer',
-            // url: 'http://localhost:8080/api/v0/respondents/answer', //For testing
+            //url: 'https://sysc4806-survey-monkey.herokuapp.com/api/v0/respondents/answer',
+             url: 'http://localhost:8080/api/v0/respondents/answer', //For testing
             headers: { 
               'Content-Type': 'application/json'
             },
@@ -184,7 +183,7 @@ function AnswerSurvey() {
     return (
         <MainDiv>
             <TitleContainer>
-                <SurveyTitleText>{surveyName}</SurveyTitleText>
+                <SurveyTitleText id="surveyName">{surveyName}</SurveyTitleText>
             </TitleContainer>
            
             <form onSubmit={(e) => handleSubmit(e)}>
