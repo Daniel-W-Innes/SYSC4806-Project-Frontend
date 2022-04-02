@@ -12,7 +12,6 @@ function AnswerSurvey() {
     var surveyName = "";
 
     useEffect(() => {
-        // axios.get('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/' + surveyorName + '/survey?name=' + surveyName)
         axios.get(('https://sysc4806-survey-monkey.herokuapp.com/api/v0/respondents/?id=' + surveyID))
         //axios.get(('http://localhost:8080/api/v0/respondents/?id=' + surveyID)) // For testing
         .then(response => {
@@ -115,12 +114,12 @@ function AnswerSurvey() {
         </div>);
     }
 
-    const sendAnswerToDB = (answerObj) => {
+    const sendAnswerToDB = (answerObj,respondentID) => {
         console.log(JSON.stringify(answerObj));
         var config = {
             method: 'post',
-            //url: 'https://sysc4806-survey-monkey.herokuapp.com/api/v0/respondents/answer',
-             url: 'http://localhost:8080/api/v0/respondents/answer', //For testing
+            url: 'https://sysc4806-survey-monkey.herokuapp.com/api/v0/respondents/answer/'+respondentID,
+            //url: 'http://localhost:8080/api/v0/respondents/answer/'+respondentID, //For testing
             headers: { 
               'Content-Type': 'application/json'
             },
@@ -133,12 +132,26 @@ function AnswerSurvey() {
             //alert("Your answers were submitted successfully.");
         }) // Redirect the user to another page?
     }
+    
+    // Create a function which sends a POST request to the backend to create a respondent using the surveyID in the URL
+    function createRespondent () {
+        var config = {
+            method: 'post',
+            url: 'https://sysc4806-survey-monkey.herokuapp.com/api/v0/respondents/'+surveyID
+            //url: 'http://localhost:8080/api/v0/respondents/'+surveyID //For testing
+        };
+        axios(config)
+        .then(response => {
+            // get respondentID
+            console.log(response.data);
+            var respondentID = response.data["id"];
+            console.log(respondentID);
+            submitQuestions(respondentID);
+        })
+    }
 
-    const handleSubmit = ((e) => {
-        e.preventDefault();
-
-        // format each answer object + send them to the back end DB
-        // unanswered questions will not have any associated anwer object
+    //submit questions const 
+    const submitQuestions = (respondentID) => {
         questionList.forEach((question) => {
             if(question["id"] in answerList) {
                 var answer = {};
@@ -169,15 +182,23 @@ function AnswerSurvey() {
                     answerList[question["id"]].forEach((option, i) => {
                         if(option) {
                             answer["answer"] = question["options"][i];
-                            sendAnswerToDB(answer);
+                            sendAnswerToDB(answer,respondentID);
                         }
                     });
                 } else { // send the answer once
                     answer["answer"] = answerList[question["id"]];
-                    sendAnswerToDB(answer);
+                    sendAnswerToDB(answer,respondentID);
                 }
             }
         });
+    }
+
+    const handleSubmit = ((e) => {
+        e.preventDefault();
+        createRespondent();
+        // format each answer object + send them to the back end DB
+        // unanswered questions will not have any associated anwer object
+
     });
 
     return (
