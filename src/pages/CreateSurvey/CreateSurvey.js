@@ -204,6 +204,7 @@ class CreateSurvey extends React.Component {
             body: JSON.stringify(request)
         };
         fetch("https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/" + this.username + "/surveys", config)
+        //fetch("http://localhost:8080/api/v0/surveyors/" + this.username + "/surveys", config)
             .then(response => response.json())  // convert to json
             .then(json => {
                 console.log(json)

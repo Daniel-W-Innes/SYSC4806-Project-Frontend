@@ -26,7 +26,8 @@ function App() {
   const setLoggedInSurveyorHandler = (accessToken, username) => {
       if (accessToken !== "" && username !== "") {
         setShowSurveyor(true);
-        axios.get(('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/api/v0/surveyors/' + username), {
+        axios.get(('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors' + username), {
+        //axios.get(('http://localhost:8080/api/v0/surveyors/' + username), {
             headers: {
                 'Authorization': "Bearer " + accessToken
             }

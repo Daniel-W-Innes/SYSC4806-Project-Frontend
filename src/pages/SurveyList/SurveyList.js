@@ -10,6 +10,7 @@ function SurveyList(props) {
     useEffect(() => {
         if (props.isLoggedIn) {
             axios.get(('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/api/v0/surveyors/' + props.username + '/surveys'), {
+            //axios.get(('http://localhost:8080/api/v0/surveyors/' + props.username + '/surveys'), {
                 headers: {
                     'Authorization': "Bearer " + localStorage.getItem("access_token")
                 }
@@ -23,6 +24,7 @@ function SurveyList(props) {
     const refreshSurveyList = (event) => {
         if (props.isLoggedIn) {
             axios.get(('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/api/v0/surveyors/' + props.username + '/surveys'), {
+            //axios.get(('http://localhost:8080/api/v0/surveyors/' + props.username + '/surveys'), {
                 headers: {
                     'Authorization': "Bearer " + localStorage.getItem("access_token")
                 }

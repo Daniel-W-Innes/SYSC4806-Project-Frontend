@@ -48,7 +48,8 @@ function SignUp() {
                 lastName: enteredLastName,
                 hashedPassword: enteredPassword
             }
-            axios.post('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/api/v0/surveyors', signUpUser)
+            axios.post('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors', signUpUser)
+            //axios.post('http://localhost:8080/api/v0/surveyors', signUpUser)
                 .then(() => {
                     setShowError(false);
                     setEnteredUsername("");

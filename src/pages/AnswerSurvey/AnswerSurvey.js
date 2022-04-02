@@ -6,24 +6,22 @@ import { MainDiv, SurveyContainer, TitleContainer, SurveyTitleText, Question, Su
 function AnswerSurvey() {
 
     let [searchParams] = useSearchParams();
-    const surveyName =  searchParams.get("name");
-    const surveyorName = searchParams.get("surveyor");
+    const surveyID =  searchParams.get("surveyID");
     const [questionList, setQuestionsList] = useState([]);
     const [answerList, setAnswerList] = useState([]);
+    var surveyName = "";
 
     useEffect(() => {
-        console.log(surveyorName);
-        console.log(surveyName);
-        // axios.get('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/' + surveyorName + '/survey?name=' + surveyName)
-        axios.get(('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/' + surveyorName + '/survey?name=' + surveyName), {
-            headers: {
-                'Authorization': "Bearer " + localStorage.getItem("access_token")
-            }}) // For testing
+        axios.get(('https://sysc4806-survey-monkey.herokuapp.com/api/v0/respondents/?id=' + surveyID))
+        //axios.get(('http://localhost:8080/api/v0/respondents/?id=' + surveyID)) // For testing
         .then(response => {
             console.log(response.data);
             setQuestionsList(response.data["questions"]);
+            surveyName = response.data["name"];
+            //set H1 elements to the surveyName
+            document.getElementById("surveyName").innerHTML = surveyName;
         })
-    }, [surveyName, surveyorName]);
+    }, [surveyID]);
 
     const handleOnMCChange = (question, choicePosition) => {
         var qId = question["id"];
@@ -116,12 +114,12 @@ function AnswerSurvey() {
         </div>);
     }
 
-    const sendAnswerToDB = (answerObj) => {
+    const sendAnswerToDB = (answerObj,respondentID) => {
         console.log(JSON.stringify(answerObj));
         var config = {
             method: 'post',
-            url: 'https://sysc4806-survey-monkey.herokuapp.com/api/v0/respondents/answer',
-            // url: 'http://localhost:8080/api/v0/respondents/answer', //For testing
+            url: 'https://sysc4806-survey-monkey.herokuapp.com/api/v0/respondents/answer/'+respondentID,
+            //url: 'http://localhost:8080/api/v0/respondents/answer/'+respondentID, //For testing
             headers: { 
               'Content-Type': 'application/json'
             },
@@ -134,12 +132,26 @@ function AnswerSurvey() {
             //alert("Your answers were submitted successfully.");
         }) // Redirect the user to another page?
     }
+    
+    // Create a function which sends a POST request to the backend to create a respondent using the surveyID in the URL
+    function createRespondent () {
+        var config = {
+            method: 'post',
+            url: 'https://sysc4806-survey-monkey.herokuapp.com/api/v0/respondents/'+surveyID
+            //url: 'http://localhost:8080/api/v0/respondents/'+surveyID //For testing
+        };
+        axios(config)
+        .then(response => {
+            // get respondentID
+            console.log(response.data);
+            var respondentID = response.data["id"];
+            console.log(respondentID);
+            submitQuestions(respondentID);
+        })
+    }
 
-    const handleSubmit = ((e) => {
-        e.preventDefault();
-
-        // format each answer object + send them to the back end DB
-        // unanswered questions will not have any associated anwer object
+    //submit questions const 
+    const submitQuestions = (respondentID) => {
         questionList.forEach((question) => {
             if(question["id"] in answerList) {
                 var answer = {};
@@ -170,21 +182,29 @@ function AnswerSurvey() {
                     answerList[question["id"]].forEach((option, i) => {
                         if(option) {
                             answer["answer"] = question["options"][i];
-                            sendAnswerToDB(answer);
+                            sendAnswerToDB(answer,respondentID);
                         }
                     });
                 } else { // send the answer once
                     answer["answer"] = answerList[question["id"]];
-                    sendAnswerToDB(answer);
+                    sendAnswerToDB(answer,respondentID);
                 }
             }
         });
+    }
+
+    const handleSubmit = ((e) => {
+        e.preventDefault();
+        createRespondent();
+        // format each answer object + send them to the back end DB
+        // unanswered questions will not have any associated anwer object
+
     });
 
     return (
         <MainDiv>
             <TitleContainer>
-                <SurveyTitleText>{surveyName}</SurveyTitleText>
+                <SurveyTitleText id="surveyName">{surveyName}</SurveyTitleText>
             </TitleContainer>
            
             <form onSubmit={(e) => handleSubmit(e)}>
