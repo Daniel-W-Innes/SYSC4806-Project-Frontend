@@ -74,36 +74,6 @@ function DisplayResponse() {
     }
 
 
-    const multipleSelectQuestion = (index) => {
-        if (index in answerVal) {
-            console.log(answerVal[index]);
-            var data_list = [];
-            for (var vals in answerVal[index]){
-                data_list.push({questions: vals, percent:answerVal[index][vals]})
-            }
-            var state = {
-                options: {
-                  data: data_list,
-                  series: [
-                    {
-                      type: 'pie',
-                      labelKey: 'questions',
-                      angleKey: 'percent',
-                      innerRadiusOffset: -70,
-                    },
-                  ],
-                },
-              };
-        
-            return <AgChartsReact options={state.options} />;
-        }else{
-            console.log("NO");
-            return(<div>
-                xx
-                </div>);
-        }
-    }
-
     const longAnswerQuestion = (index) => {
         if (index in answerVal) {
             console.log("LONG",answerVal[index]);
@@ -181,7 +151,7 @@ function DisplayResponse() {
                 <SurveyContainer key={i}> 
                     <Question>Q{i+1} &nbsp; {question["question"]}</Question><br /> <br />
                     {("options" in question && question["displayFormat"] === "SINGLE_SELECTION") ? multipleChoiceQuestion(question["id"]) : ""}
-                    {("options" in question && question["displayFormat"] === "MULTI_SELECTION") ? multipleSelectQuestion(question["id"]) : ""}
+                    {("options" in question && question["displayFormat"] === "MULTI_SELECTION") ? multipleChoiceQuestion(question["id"]) : ""}
                     {"max" in question ? numberQuestion(question["id"]) : ""}
                     { !("options" in question) && !("max" in question) ? longAnswerQuestion(question["id"]) : ""}
                 </SurveyContainer>)
