@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import {HashLink} from "react-router-hash-link";
 
 export const MainDiv = styled.div`
     padding-top: 10%;
@@ -29,5 +30,22 @@ export const UpdateButton = styled.button`
         transition: all 0.2s ease-in-out;
         background: #3DED97;
         color: #FFFF;
+    }
+`
+export const SurveyBtnLink = styled(HashLink)`
+    border-radius: 4px;
+    background: #7A63FF;
+    padding: 5px 10px;
+    color: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-decoration: none;
+
+    &:hover {
+        transition: all 0.2s ease-in-out;
+        background: #3DED97;
+        color: #fff;
     }
 `
