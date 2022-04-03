@@ -5,8 +5,9 @@ import Home from './pages/Home/Home';
 import SurveyList from './pages/SurveyList/SurveyList';
 import CreateSurvey from './pages/CreateSurvey/CreateSurvey';
 import AnswerSurvey from './pages/AnswerSurvey/AnswerSurvey';
-import SignIn from "./pages/SignIn/SignIn"
-import SignUp from "./pages/SignUp/SignUp"
+import SignIn from "./pages/SignIn/SignIn";
+import SignUp from "./pages/SignUp/SignUp";
+import DisplayResponse from "./pages/DisplayResponse/DisplayResponse";
 import Navbar from './components/Navbar';
 import axios from 'axios';
 
@@ -51,6 +52,7 @@ function App() {
           <Route path="/answer-survey" element={<AnswerSurvey/>} />
           <Route path="/signin" element={<SignIn setLoggedInSurveyor={setLoggedInSurveyorHandler} />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/display-response" element={<DisplayResponse />}/>
       </Routes>
     </Router>
   );
