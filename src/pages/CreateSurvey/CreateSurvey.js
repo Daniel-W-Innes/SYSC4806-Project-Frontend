@@ -208,7 +208,8 @@ class CreateSurvey extends React.Component {
             .then(response => response.json())  // convert to json
             .then(json => {
                 console.log(json)
-                alert("Your answers were submitted successfully.");
+                //display survey link for the user in an alert
+                prompt("Your survey was created successfully. Survey Link:", "https://sysc4806.brotherwolf.ca/answer-survey?surveyID=" + json["id"]);
             })
             .catch(err => console.log('Request Failed', err));
     }
