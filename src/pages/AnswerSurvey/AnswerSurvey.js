@@ -9,7 +9,8 @@ function AnswerSurvey() {
     const surveyID =  searchParams.get("surveyID");
     const [questionList, setQuestionsList] = useState([]);
     const [answerList, setAnswerList] = useState([]);
-    var surveyName = "";
+    const [surveyName, setName] = useState("");
+
 
     useEffect(() => {
         axios.get(('https://sysc4806-survey-monkey.herokuapp.com/api/v0/respondents/?id=' + surveyID))
@@ -17,9 +18,9 @@ function AnswerSurvey() {
         .then(response => {
             console.log(response.data);
             setQuestionsList(response.data["questions"]);
-            surveyName = response.data["name"];
+            setName(response.data["name"]);
             //set H1 elements to the surveyName
-            document.getElementById("surveyName").innerHTML = surveyName;
+            
         })
     }, [surveyID]);
 
@@ -205,7 +206,7 @@ function AnswerSurvey() {
     return (
         <MainDiv>
             <TitleContainer>
-                <SurveyTitleText id="surveyName">{surveyName}</SurveyTitleText>
+                <SurveyTitleText>{surveyName}</SurveyTitleText>
             </TitleContainer>
            
             <form onSubmit={(e) => handleSubmit(e)}>
