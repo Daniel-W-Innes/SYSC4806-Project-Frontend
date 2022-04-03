@@ -65,9 +65,8 @@ function DisplayResponse() {
         
             return <AgChartsReact options={state.options} />;
         }else{
-            console.log("NO");
             return(<div>
-                xx
+                [Loading Data]
                 </div>);
         }
        
@@ -76,8 +75,6 @@ function DisplayResponse() {
 
     const longAnswerQuestion = (index) => {
         if (index in answerVal) {
-            console.log("LONG",answerVal[index]);
-            
             var list = '';
             for (var vals in answerVal[index]){
                 list += vals + ". "+ answerVal[index][vals]["answer"]+"<br>";
@@ -85,7 +82,9 @@ function DisplayResponse() {
             
             return <div> {list.split('<br>').map(splits => <p>{splits}</p>)}</div>
         } else {
-            return <div></div>
+            return <div>
+              [Loading Data]
+            </div>
         }
         
     }
@@ -93,7 +92,6 @@ function DisplayResponse() {
     const numberQuestion = (index) => {
         if (index in answerVal) {
             var maxValue = 0
-            console.log(answerVal[index]);
             var data_list = [];
             for (var vals in answerVal[index]){
                 data_list.push({Rating: answerVal[index][vals]["answer"]})
@@ -133,9 +131,8 @@ function DisplayResponse() {
         
             return <AgChartsReact options={state.options} />;
         }else{
-            console.log("NO");
             return(<div>
-                xx
+                [Loading Data]
                 </div>);
         }
     }
