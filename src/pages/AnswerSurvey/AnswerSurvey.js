@@ -147,6 +147,7 @@ function AnswerSurvey() {
             var respondentID = response.data["id"];
             console.log(respondentID);
             submitQuestions(respondentID);
+            alert("Your answers were submitted successfully.");
         })
     }
 
