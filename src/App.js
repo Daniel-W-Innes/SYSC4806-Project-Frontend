@@ -39,10 +39,10 @@ function App() {
           <Route path="/" element={<Home isLoggedIn={isSurveyorLoggedIn} />} />
           <Route path="/survey-list" element={<SurveyList username={surveyorUsername} isLoggedIn={isSurveyorLoggedIn} />} />
           <Route path="/create-survey" element={<CreateSurvey username={surveyorUsername} />} />
-          <Route path="/answer-survey" element={<AnswerSurvey/>} />
           <Route path="/signin" element={<SignIn setLoggedInSurveyor={setLoggedInSurveyorHandler} />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/display-response" element={<DisplayResponse />}/>
+          <Route path="/answer-survey" element={<AnswerSurvey />} />
       </Routes>
     </Router>
   );
