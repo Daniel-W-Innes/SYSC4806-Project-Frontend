@@ -27,7 +27,7 @@ function App() {
   const setLoggedInSurveyorHandler = (accessToken, username) => {
       if (accessToken !== "" && username !== "") {
         setShowSurveyor(true);
-        axios.get(('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors' + username), {
+        axios.get(('https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/' + username), {
         //axios.get(('http://localhost:8080/api/v0/surveyors/' + username), {
             headers: {
                 'Authorization': "Bearer " + accessToken
@@ -48,7 +48,7 @@ function App() {
       <Routes>
           <Route path="/" element={<Home isLoggedIn={isSurveyorLoggedIn} />} />
           <Route path="/survey-list" element={<SurveyList username={surveyorUsername} isLoggedIn={isSurveyorLoggedIn} />} />
-          <Route path="/create-survey" element={<CreateSurvey username={surveyorUsername} isLoggedIn={isSurveyorLoggedIn} />} />
+          <Route path="/create-survey" element={<CreateSurvey username={surveyorUsername} />} />
           <Route path="/answer-survey" element={<AnswerSurvey/>} />
           <Route path="/signin" element={<SignIn setLoggedInSurveyor={setLoggedInSurveyorHandler} />} />
           <Route path="/signup" element={<SignUp />} />
