@@ -41,29 +41,12 @@ function DisplayResponse() {
         };
         axios(config).then(response=>{
             setAnswer(oldState => ({...oldState, [questionID] : response.data}));
-            //console.log("cringe")
         });
         
     }
     
     const multipleChoiceQuestion = (index) => {
-        
-        // var config = {
-        //     method: 'get',
-        //     headers: {
-        //         "Authorization": "Bearer " + localStorage.getItem("access_token")
-        //     },
-        //     //url: 'https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/question/'+respondentID,
-        //     url: 'http://localhost:8080/api/v0/surveyors/question/'+questionID//For testing
-        // };
-
-        // axios(config)erik!!!!!!!!!!!!!!!!STOP IM IN A CALL WITH ADI!
-        // .then(response => {
-        //     console.log(response);
-        //     cringo = response.data;
-            
-        // }); // Redirect the user to another page?;
-        
+                
         if (index in answerVal) {
             console.log(answerVal[index]);
             var data_list = [];
