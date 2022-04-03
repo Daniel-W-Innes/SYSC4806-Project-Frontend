@@ -1,8 +1,8 @@
-import React, { useState, useEffect , Component} from "react";
+import React, { useState, useEffect} from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from 'axios';
 import { AgChartsReact } from 'ag-charts-react';
-import { MainDiv, SurveyContainer, TitleContainer, SurveyTitleText, Question, SubmitBtn, BtnContainer, MultipleChoiceOption, TextInput } from "./DisplayResponseElements";
+import { MainDiv, SurveyContainer, TitleContainer, SurveyTitleText, Question} from "./DisplayResponseElements";
 
 function DisplayResponse() {
 
@@ -20,15 +20,11 @@ function DisplayResponse() {
             setQuestionsList(response.data["questions"]);
             setName(response.data["name"]);
             //set H1 elements to the surveyName
-            document.getElementById("surveyName").innerHTML = surveyName;
-            console.log("I COME SOMETIMES!");
             for (var value in response.data["questions"]){
                 axiosGet(response.data["questions"][value]["id"]);
             }
         });
-      
-        
-    },[]);
+    },[surveyID]);
 
     const axiosGet = (questionID)=>{
         var config = {
@@ -112,7 +108,6 @@ function DisplayResponse() {
         if (index in answerVal) {
             console.log("LONG",answerVal[index]);
             
-            var data_list = [];
             var list = '';
             for (var vals in answerVal[index]){
                 list += vals + ". "+ answerVal[index][vals]["answer"]+"<br>";
@@ -174,13 +169,6 @@ function DisplayResponse() {
                 </div>);
         }
     }
-
-    const sendAnswerToDB = (answerObj,respondentID) => {
-        console.log(JSON.stringify(answerObj));
-
-    }
-    
-
 
     return (
         <MainDiv>
