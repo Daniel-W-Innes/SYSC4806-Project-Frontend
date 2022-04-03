@@ -81,7 +81,7 @@ function AnswerSurvey() {
                 </MultipleChoiceOption>)
             }
         </div>);
-    }
+    };
 
     const handleOnTextChange = (question, e, type) => { // Used for text and number questions
         var qId = question["id"];
@@ -100,7 +100,7 @@ function AnswerSurvey() {
                 onChange={(e) => handleOnTextChange(question, e, "text")} 
             />
         </div>);
-    }
+    };
 
     const numberQuestion = (question) => {
         return(<div>
@@ -113,7 +113,7 @@ function AnswerSurvey() {
                 onKeyDown={(e) => {e.preventDefault()}}
             />
         </div>);
-    }
+    };
 
     const sendAnswerToDB = (answerObj,respondentID) => {
         console.log(JSON.stringify(answerObj));
@@ -132,7 +132,7 @@ function AnswerSurvey() {
             console.log(response.data);
             //alert("Your answers were submitted successfully.");
         }) // Redirect the user to another page?
-    }
+    };
     
     // Create a function which sends a POST request to the backend to create a respondent using the surveyID in the URL
     function createRespondent () {
@@ -150,7 +150,7 @@ function AnswerSurvey() {
             submitQuestions(respondentID);
             alert("Your answers were submitted successfully.");
         })
-    }
+    };
 
     //submit questions const 
     const submitQuestions = (respondentID) => {
@@ -193,7 +193,7 @@ function AnswerSurvey() {
                 }
             }
         });
-    }
+    };
 
     const handleSubmit = ((e) => {
         e.preventDefault();
