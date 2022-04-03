@@ -36,7 +36,7 @@ function DisplayResponse() {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("access_token")
             },
-            url: 'https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/question/'+respondentID,
+            url: 'https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/question/'+questionID
             //url: 'http://localhost:8080/api/v0/surveyors/question/'+questionID//For testing
         };
         axios(config).then(response=>{
