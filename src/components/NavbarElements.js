@@ -72,3 +72,20 @@ export const NavSignUpBtnLink = styled(HashLink)`
         color: #fff;
     }
 `
+
+export const SearchInput = styled.input`
+    display: block;
+    box-sizing: border-box;
+	border: none;
+	padding: 12px 15px;
+    padding-left: 37.5px;
+    margin-bottom: 30px; ;
+	margin-top: 30px;
+    margin-left: auto;
+	width: 30%;
+    font-size: 0.8rem;
+    background: #a5e6d2;
+    &:focus {
+        outline: 2px solid #7A63FF;
+    }
+`
