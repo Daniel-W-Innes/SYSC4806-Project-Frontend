@@ -13,15 +13,24 @@ function AnswerSurvey() {
 
 
     useEffect(() => {
+        
+        //preform axios get and if returns 404 then set question list to empty array and set name to NO SURVEY FOUND
         axios.get(('https://sysc4806-survey-monkey.herokuapp.com/api/v0/respondents/?id=' + surveyID))
         //axios.get(('http://localhost:8080/api/v0/respondents/?id=' + surveyID)) // For testing
         .then(response => {
-            console.log(response.data);
+            console.log("Response?: " + response.data);
             setQuestionsList(response.data["questions"]);
             setName(response.data["name"]);
             //set H1 elements to the surveyName
-            
         })
+        .catch(error => {
+            console.log("Error: " + error);
+            setQuestionsList([]);
+            setName("NO SURVEY FOUND");
+        });
+            
+        
+
     }, [surveyID]);
 
     const handleOnMCChange = (question, choicePosition) => {
@@ -208,10 +217,9 @@ function AnswerSurvey() {
             <TitleContainer>
                 <SurveyTitleText>{surveyName}</SurveyTitleText>
             </TitleContainer>
-           
             <form onSubmit={(e) => handleSubmit(e)}>
                 {questionList.map((question, i) => 
-                <SurveyContainer key={i}> 
+                <SurveyContainer key={i}>
                     <Question>Q{i+1} &nbsp; {question["question"]}</Question><br /> <br />
                     {("options" in question && question["displayFormat"] === "SINGLE_SELECTION") ? multipleChoiceQuestion(question) : ""}
                     {("options" in question && question["displayFormat"] === "MULTI_SELECTION") ? multipleSelectQuestion(question) : ""}
@@ -219,7 +227,7 @@ function AnswerSurvey() {
                     { !("options" in question) && !("max" in question) ? longAnswerQuestion(question) : ""}
                 </SurveyContainer>)
                 }
-                <BtnContainer><SubmitBtn type="submit" value="SUBMIT SURVEY" /></BtnContainer>
+                {!(questionList.length === 0) && <BtnContainer><SubmitBtn type="submit" value="SUBMIT SURVEY" /></BtnContainer>}
             </form>
         </MainDiv>
     );

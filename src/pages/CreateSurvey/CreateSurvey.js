@@ -209,7 +209,7 @@ class CreateSurvey extends React.Component {
             .then(json => {
                 console.log(json)
                 //display survey link for the user in an alert
-                prompt("Your survey was created successfully. Survey Link:", "https://sysc4806.brotherwolf.ca/answer-survey?surveyID=" + json["id"]);
+                prompt("Your survey was created successfully. \n Provide users with your new Survey ID: " , json["id"]);
             })
             .catch(err => console.log('Request Failed', err));
     }
