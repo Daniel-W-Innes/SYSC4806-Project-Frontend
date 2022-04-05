@@ -7,7 +7,11 @@ class Surveyor{
     - firstName : String
     - lastName : String
     - hashedPassword : String
+    - surveys : List<Survey>
+    - roles : Collection<Role>
     + Surveyor(username : String, firstName : String, lastName : String, hashedPassword : String) : Surveyor
+    + addRole(role : Role) : void
+    + getRoles() : Collection<Role>
     + getId() : Long
     + getUsername() : String
     + setUsername(username : String) : void
@@ -22,7 +26,7 @@ class Surveyor{
     + addSurvey(s : Survey ) : boolean
     + toString() : String
     + equals(o : Object) : boolean
-    + hashCode() + int
+    + hashCode() : int
 }
 
 class Survey{
@@ -32,6 +36,7 @@ class Survey{
     - respondents: List<Respondent>
     - questions : List<Question>
     + Survey(name : String): Survey
+    + Survey(name : String, questions : List<Question>) : Survey
     + getId() : Long
     + getName() : String
     + setName(name : String) : void
@@ -39,29 +44,33 @@ class Survey{
     + getSurveyorId() : Long
     + addRespondent(resp: Respondent): boolean
     + getRespondents(): List<Respondent>
-    + removeRespondent(resp: Respondent): boolean
+    + sameAnswerRespondentList(ans : Answer) : List<Respondent>
     + getQuestions() : List<Question>
     + addQuestion(q : Question) : boolean
     + removeQuestion(q : Question) : boolean
+    + hasQuestion(question : Question) : Boolean
     + toString() : String
     + equals(o : Object) : boolean
-    + hashCode() + int
+    + hashCode() : int
 }
 
 class Respondent{
     - id : Long
-    - survey : Survey
-    - answer_list : List<Answer>
-    + Respondent(survey : Survey): Respondent
+    - survey: Survey
+    - answerList : List<Answer>
+    + Respondent(): Respondent
+    + getSurvey(): Survey
+    + getAnswers() : List<Answer>
     + getId() : Long
-    + setSurvey(survey: Survey): void
+    + setSurvey(survey : Survey) : void
     + setAnswers(answers: List<Answer>): void
     + addAnswer(answer: Answer): void
     + removeAnswer(answer: Answer): void
+    + getAnswersToQuestion(questionId : long) : List<Answer>
     + compareAnswer(answer: Answer): Boolean
     + toString() : String
     + equals(o : Object) : boolean
-    + hashCode() + int
+    + hashCode() : int
 }
 
 class Role {
@@ -74,7 +83,7 @@ class Role {
 }
 
 package question{
-    class Question{
+    abstract class Question{
         - id : Long
         - survey : Survey
         - question : String
@@ -84,9 +93,10 @@ package question{
         + setQuestion(question : String) : void
         + getSurveyId() : Long
         + setSurvey(survey: Survey) : void
+        + getSurvey() : Survey
         + toString() : String
         + equals(o : Object) : boolean
-        + hashCode() + int
+        + hashCode() : int
     }
     class NumberQuestion extends Question{
         - max : int
@@ -98,69 +108,75 @@ package question{
         + setMin(min : int) : void
         + toString() : String
         + equals(o : Object) : boolean
-        + hashCode() + int
+        + hashCode() : int
     }
     enum MultipleChoiceType{
         SINGLE_SELECTION
         MULTI_SELECTION
-        RATING
     }
-    class MultipleChoiceQuestion extends Question{
+    class MultipleChoiceQuestion extends TextAnswerable{
         - options : Set<String>
-        - type : MultipleChoiceType
-        + MultipleChoiceQuestion(question : String, type : MultipleChoiceType) : MultipleChoiceQuestion
+        - displayFormat : MultipleChoiceType
+        + MultipleChoiceQuestion(question : String, displayFormat : MultipleChoiceType) : MultipleChoiceQuestion
+        + MultipleChoiceQuestion(question : String, displayFormat : MultipleChoiceType, options : Set<String>) : MultipleChoiceQuestion
         + getOptions(): Set<String>
         + addOption(option : String) : boolean
         + removeOption(option : String) : boolean
-        + getType() : MultipleChoiceType
-        + setType(type : MultipleChoiceType) : void
+        + getDisplayFormat() : MultipleChoiceType
+        + setDisplayFormat(displayFormat : MultipleChoiceType) : void
         + toString() : String
         + equals(o : Object) : boolean
-        + hashCode() + int
+        + hashCode() : int
     }
     class TextAnswerable extends Question {
         + TextAnswerable(question: String): TextAnswerable
     }
 }
 package answer{
-    class Answer{
+    abstract class Answer{
         - id : Long
-        - survey : Survey
-        - question : Question
+        - respondent : Respondent
         + getId() : Long
-        + getSurveyId() : Long
-        + setSurvey(survey : Survey) : void
+        + getRespondent() : Respondent
+        + setRespondent(respondent : Respondent) : void
+        + toString() : String
+        + equals(o : Object) : boolean
+        + hashCode() : int
+    }
+    class NumberAnswer extends Answer{
+        - answer : int
+        - question : NumberQuestion
+        + NumberAnswer(answer : int) : NumberAnswer
+        + getAnswer() : int
+        + setAnswer(answer : int) : void
         + getQuestionId() : Long
         + setQuestion(question : Question) : void
         + toString() : String
         + equals(o : Object) : boolean
-        + hashCode() + int
-    }
-    class NumberAnswer extends Answer{
-        - answer : int
-        + getAnswer() : int
-        + setAnswer(answer : int) : void
-        + toString() : String
-        + equals(o : Object) : boolean
-        + hashCode() + int
+        + hashCode() : int
     }
     class TextAnswer extends Answer{
         - answer : String
+        - question : TextAnswerable
         + TextAnswer(answer : String) : TextAnswer
         + getAnswer() : String
         + setAnswer(answer : String) : void
+        + getQuestionId() : Long
+        + setQuestion(question : Question) : void
         + toString() : String
         + equals(o : Object) : boolean
-        + hashCode() + int
+        + hashCode() : int
     }
 }
 
 Surveyor "1" o-- "0..*" Survey
 Survey "1" *-- "1..*" Question
-Answer "0..*" *-- "1" Survey
-Answer "0..*" *-- "1" Question
+TextAnswer "0..*" *-- "1" TextAnswerable
+NumberAnswer "0..*" *-- "1" NumberQuestion
 MultipleChoiceQuestion "0..*" *-- "1" MultipleChoiceType
-Respondent "1" *-- "1" Survey
+Respondent "1" *-- "1..*" Answer
+Survey "1" o-- "0..*" Respondent
+Surveyor "1" *-- "1..*" Role
 
 
 @enduml
