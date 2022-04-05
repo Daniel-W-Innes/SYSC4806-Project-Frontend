@@ -28,7 +28,7 @@ In this application, we consider that to create surveys, a user must have an acc
 ### Database
 The database structure is very similar to the structure of the model classes. We are using a PostgreSQL database hosted on Heroku. One-to-many relationships are modelled with foreign keys and inheritance is modelled with joined tables.
 
-![DatabaseSchema](/docs/DatabaseSchema.PNG)
+![DatabaseSchema](/docs/DatabaseSchema.png)
 
 
 ### Use Case 1: Authentication
