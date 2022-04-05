@@ -40,25 +40,25 @@ This is the use case that allows a surveyor to log in to the application and man
 
 ### Use Case 2: Display list of surveys
 
-Take the list of surveys that were created by a specific surveyor and to display it. The survey names and IDs are stored in the database (back-end) and we format this data into an HTML table before displaying it.
+Take the list of surveys that were created by a specific surveyor and to display it. The survey names and IDs are stored in the database (back-end) and we format this data into an HTML table before displaying it. We can click the "CHECK RESULTS" button to get to use case 5.
 
 ![ListOfSurveys](/docs/ListOfSurveys.png)
 
 ### Use Case 3: Create a survey
 
-In this use case, the user can create a new survey and save it to the database. The user needs to specify the name of the survey and the list of questions. Once the survey was successfully created, we provide the surveyor with a link to the survey. This link can be shared to respondents such that they can answer the survey and save their answers.
+In this use case, the user can create a new survey and save it to the database. The user needs to specify the name of the survey and the list of questions. Once the survey was successfully created, we provide the surveyor with the survey ID. The ID can be shared to respondents so they can answer the survey.
 
 ![CreateSurvey](/docs/CreateSurvey.png)
 
 ### Use Case 4: Answer a survey
 
-In this use case, we fetch the survey name from the URL and we use the name to fetch the survey questions from the database. The questions are displayed and the user can answer them. The answers are stored in the state of the application (through React) and when the user clicks "SUBMIT SURVEY", the answers are saved into the database.
+In this use case, a respondent can enter a survey ID in the input box on the upper left corner of the page and answer the survey with this ID. We fetch the survey ID from the URL and we use the ID to fetch the survey questions from the database. The questions are displayed and the user can answer them. The answers are stored in the state of the application (through React) and when the user clicks "SUBMIT SURVEY", the answers are saved into the database.
 
 ![AnswerSurvey](/docs/AnswerSurvey.png)
 
 ### Use Case 5: Display survey results
 
-In this use case, the surveyor can view the answers to a survey that they created. Answers to long answer questions are presented as a list. Multiple choice answers are presented with pie charts, and number answers are presented with histograms. Anyone can answer a survey, but only the surveyor who created the survey can view its answers. To view  
+In this use case, the surveyor can view the answers to a survey that they created. To see the answers, the user has to look at their list of survey (use case 2) and select the specific survey. Answers to long answer questions are presented as a list. Multiple choice answers are presented with pie charts, and number answers are presented with histograms. Anyone can answer a survey, but only the surveyor who created the survey can view its answers. To view  
 
 ![DisplayResults1](/docs/DisplayResults1.PNG)
 ![DisplayResults2](/docs/DisplayResults2.PNG)
