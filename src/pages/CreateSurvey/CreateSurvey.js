@@ -146,7 +146,7 @@ class CreateSurvey extends React.Component {
                                        onChange={(event) => {
                                            if (parseInt(event.target.value) > this.state.questions[name].numOptions) {
                                                const obj = this.state.questions[name].options;
-                                               obj[parseInt(event.target.value)] = ""
+                                               obj[parseInt(event.target.value) - 1] = ""
                                                this.updateQuestion(name, 'options', obj)
                                            } else {
                                                const obj = this.state.questions[name].options;
@@ -204,12 +204,12 @@ class CreateSurvey extends React.Component {
             body: JSON.stringify(request)
         };
         fetch("https://sysc4806-survey-monkey.herokuapp.com/api/v0/surveyors/" + this.username + "/surveys", config)
-        //fetch("http://localhost:8080/api/v0/surveyors/" + this.username + "/surveys", config)
+            //fetch("http://localhost:8080/api/v0/surveyors/" + this.username + "/surveys", config)
             .then(response => response.json())  // convert to json
             .then(json => {
                 console.log(json)
                 //display survey link for the user in an alert
-                prompt("Your survey was created successfully. \n Provide users with your new Survey ID: " , json["id"]);
+                prompt("Your survey was created successfully. \n Provide users with your new Survey ID: ", json["id"]);
             })
             .catch(err => console.log('Request Failed', err));
     }
